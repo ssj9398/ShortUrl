@@ -1,0 +1,6 @@
+POST localhost/url
+Content-Type: application/json
+
+{
+  "url": "https://naver.com"
+}
