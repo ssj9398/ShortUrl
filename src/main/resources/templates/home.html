@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <title>단축 Url</title>
+    <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
+
+        .wrap {
+            margin: auto;
+            width: 900px;
+        }
+
+        .comment {
+            font-weight: bold;
+            color: blue;
+        }
+
+        .posting-box {
+            margin: 10px auto 30px auto;
+            width: 500px;
+
+            border: 3px solid black;
+            border-radius: 5px;
+
+            padding: 25px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="posting-box">
+        <div class="form-group">
+            <label for="InputUrl">원본 Url 입력</label>
+            <input id ="inputBox" type="text" class="form-control" placeholder="">
+        </div>
+        <button id = "makeUrl" class="btn btn-primary">단축 Url 생성</button>
+        <div class="form-group">
+            <label for="OutputUrl">단축 Url</label>
+            <input type="text" class="form-control" placeholder="" id="inputValue" readonly>
+            단축 Url을 클릭해서 복사하세요!
+        </div>
+
+    </div>
+</div>
+</body>
+<script>
+   document.getElementById('makeUrl').onclick = ()=>{
+       console.log("fdasfadsfds");
+       const inputText = document.getElementById('inputBox').value;
+       let data = {
+           "url":inputText
+       }
+       $.ajax({
+           type: "POST",
+           url: "http://url.govpped.com/url",
+           contentType: 'application/json',
+           data: JSON.stringify(data),
+           success: function (response) {
+               $('input[id=inputValue]').attr('value',response);
+           }, error: function (error) {
+               console.log(error);
+           }
+       });
+   }
+
+   document.getElementById('inputValue').onclick = ()=>{
+       console.log("fdsafdasfds");
+   }
+</script>
+</html>
