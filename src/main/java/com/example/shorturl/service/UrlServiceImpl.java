@@ -22,7 +22,7 @@ public class UrlServiceImpl implements UrlService{
     @Override
     @Transactional
     public String addUrl(UrlRequestDto.Create create) {
-        return urlRepository.save(create.toEntity(makeFakeUrl())).getFakeUrl();
+        return urlRepository.save(create.toEntity(makeFakeUrl(), checkHttp(create.getUrl()))).getFakeUrl();
     }
 
     @Override
@@ -46,6 +46,14 @@ public class UrlServiceImpl implements UrlService{
             if(optUrlInfo.isEmpty()){
                 return randomString;
             }
+        }
+    }
+
+    public String checkHttp(String url){
+        if(url.indexOf("http")==-1){
+            return "http://"+url;
+        }else {
+            return url;
         }
     }
 }
