@@ -49,41 +49,50 @@
 <div class="wrap">
     <div class="posting-box">
         <div class="form-group">
-            <label for="InputUrl">원본 Url 입력</label>
-            <input id ="inputBox" type="text" class="form-control" placeholder="">
+            <input type="text" id="inputText" class="form-control" placeholder="주소를 입력해주세요" onkeydown="enterKey()">
         </div>
-        <button id = "makeUrl" class="btn btn-primary">단축 Url 생성</button>
+        <button id="makeUrlButton" class="btn btn-primary" onclick="makeShortUrl()">단축 Url 생성</button>
         <div class="form-group">
-            <label for="OutputUrl">단축 Url</label>
-            <input type="text" class="form-control" placeholder="" id="inputValue" readonly>
-            단축 Url을 클릭해서 복사하세요!
+            <input type="text" id="shortUrl" class="form-control" placeholder="단축 Url 생성 시 주소가 생겨요" readonly>
+            생성된 Url 클릭 시 복사
         </div>
 
     </div>
 </div>
 </body>
 <script>
-   document.getElementById('makeUrl').onclick = ()=>{
-       console.log("fdasfadsfds");
-       const inputText = document.getElementById('inputBox').value;
-       let data = {
-           "url":inputText
-       }
-       $.ajax({
-           type: "POST",
-           url: "http://url.govpped.com/url",
-           contentType: 'application/json',
-           data: JSON.stringify(data),
-           success: function (response) {
-               $('input[id=inputValue]').attr('value',response);
-           }, error: function (error) {
-               console.log(error);
-           }
-       });
-   }
 
-   document.getElementById('inputValue').onclick = ()=>{
-       console.log("fdsafdasfds");
-   }
+    const shortUrl = document.getElementById('shortUrl');
+
+    function enterKey() {
+        if (window.event.keyCode == 13) {
+            makeShortUrl();
+        }
+    }
+
+    function makeShortUrl() {
+        const inputText = document.getElementById('inputText').value;
+
+        let data = {
+            "url": inputText
+        }
+        $.ajax({
+            type: "POST",
+            url: "http://url.govpped.com/url",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                $('input[id=shortUrl]').attr('value', response);
+            }, error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    shortUrl.onclick = () => {
+        shortUrl.select();
+        document.execCommand('copy');
+        alert("복사 완료!")
+    }
 </script>
 </html>
