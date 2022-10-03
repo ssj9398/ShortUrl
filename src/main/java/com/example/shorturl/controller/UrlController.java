@@ -18,10 +18,10 @@ public class UrlController {
 
     @PostMapping("url")
     public ResponseEntity<String> addUrl(@RequestBody UrlRequestDto.Create create){
-        return ResponseEntity.status(HttpStatus.CREATED).body("http://url.govpped.com/url/"+urlService.addUrl(create));
+        return ResponseEntity.status(HttpStatus.CREATED).body("http://url.govpped.com/"+urlService.addUrl(create));
     }
 
-    @GetMapping("url/{url}")
+    @GetMapping("{url}")
     public void redirectUrl(HttpServletResponse response,
                             @PathVariable String url) throws IOException {
         response.sendRedirect(urlService.getUrlInfo(url));
