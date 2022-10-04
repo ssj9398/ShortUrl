@@ -26,8 +26,8 @@ public class UrlServiceImpl implements UrlService{
     }
 
     @Override
-    public String getUrlInfo(String url) {
-        return urlRepository.findByFakeUrl(url).get().getRealUrl();
+    public UrlInfo getUrlInfo(String url) {
+        return urlRepository.findByFakeUrl(url).get();
     }
 
     public String makeFakeUrl(){
