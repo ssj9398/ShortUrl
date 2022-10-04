@@ -2,14 +2,17 @@ package com.example.shorturl.service;
 
 import com.example.shorturl.domain.UrlInfo;
 import com.example.shorturl.dto.UrlRequestDto;
+import com.example.shorturl.dto.UrlResponseDto;
 import com.example.shorturl.repository.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +29,21 @@ public class UrlServiceImpl implements UrlService{
     }
 
     @Override
+    @Transactional
     public UrlInfo getUrlInfo(String url) {
-        return urlRepository.findByFakeUrl(url).get();
+        if(url.charAt(url.length() - 1)!='*'){
+            UrlInfo urlInfo = urlRepository.findByFakeUrl(url).get();
+            urlInfo.updateVisitCount();
+            return urlRepository.findByFakeUrl(url).get();
+        }
+        return urlRepository.findByFakeUrl(url.substring(0, url.length()-1)).get();
+    }
+
+    @Override
+    public List<UrlResponseDto> getTopTenUrlList() {
+        return urlRepository.findTop10ByOrderByCreatedAtDesc().stream()
+                .map(UrlResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     public String makeFakeUrl(){

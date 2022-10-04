@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,13 +24,18 @@ public class UrlController {
         return ResponseEntity.status(HttpStatus.CREATED).body("http://url.govpped.com/url/"+urlService.addUrl(create));
     }
 
+    @GetMapping("url")
+    public ResponseEntity<Object> getTopTenUrlList(){
+        return ResponseEntity.status(HttpStatus.OK).body(urlService.getTopTenUrlList());
+    }
+
     @GetMapping("url/{url}")
     public UrlResponseDto redirectUrl(HttpServletResponse response,
                                       @PathVariable String url) throws IOException {
         if(url.charAt(url.length() - 1)!='*'){
             response.sendRedirect(urlService.getUrlInfo(url).getRealUrl());
         }else {
-            return new UrlResponseDto(urlService.getUrlInfo(url.substring(0,url.length()-1)));
+            return new UrlResponseDto(urlService.getUrlInfo(url));
         }
         return null;
     }
