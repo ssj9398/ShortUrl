@@ -1,5 +1,6 @@
 package com.example.shorturl.controller;
 
+import com.example.shorturl.advice.Success;
 import com.example.shorturl.domain.UrlInfo;
 import com.example.shorturl.dto.UrlRequestDto;
 import com.example.shorturl.dto.UrlResponseDto;
@@ -25,8 +26,8 @@ public class UrlController {
     }
 
     @GetMapping("url")
-    public ResponseEntity<Object> getTopTenUrlList(){
-        return ResponseEntity.status(HttpStatus.OK).body(urlService.getTopTenUrlList());
+    public ResponseEntity<Success> getTopTenUrlList(){
+        return new ResponseEntity<>(new Success("최근 등록 된 주소 10개 등록 성공!",urlService.getTopTenUrlList()),HttpStatus.OK);
     }
 
     @GetMapping("url/{url}")
