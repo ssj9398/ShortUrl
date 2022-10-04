@@ -35,4 +35,8 @@ public class UrlInfo extends Timestamped {
         this.fakeUrl = fakeUrl;
         this.visitCount = visitCount;
     }
+
+    public void updateVisitCount() {
+        this.visitCount +=1;
+    }
 }
