@@ -83,16 +83,21 @@
             data: JSON.stringify(data),
             success: function (response) {
                 $('input[id=shortUrl]').attr('value', response);
+                copyUrl();
             }, error: function (error) {
                 console.log(error);
             }
         });
     }
 
-    shortUrl.onclick = () => {
+    function copyUrl(){
         shortUrl.select();
         document.execCommand('copy');
         alert("복사 완료!")
+    }
+
+    shortUrl.onclick = () => {
+        copyUrl();
     }
 </script>
 </html>
