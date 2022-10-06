@@ -9,6 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -24,8 +28,16 @@ public class UrlServiceImpl implements UrlService{
 
     @Override
     @Transactional
-    public String addUrl(UrlRequestDto.Create create) {
-        return urlRepository.save(create.toEntity(makeFakeUrl(), checkHttp(create.getUrl()))).getFakeUrl();
+    public String addUrl(UrlRequestDto.Create create) throws IOException {
+            String checkValidUrl = checkValidUrl(create.getUrl());
+            log.info("checkValidUrl" + checkValidUrl);
+            if(checkValidUrl!="유효한 주소가 아닙니다."){
+                log.info("aaaaaaaaaaaa");
+            }else {
+                log.info("bbbbbbbb");
+                urlRepository.save(create.toEntity(makeFakeUrl(), checkHttp(create.getUrl()))).getFakeUrl();
+            }
+            return "";
     }
 
     @Override
@@ -70,6 +82,17 @@ public class UrlServiceImpl implements UrlService{
             return "http://"+url;
         }else {
             return url;
+        }
+    }
+
+    public String checkValidUrl(String Realurl) throws IOException {
+        try {
+            URL url = new URL(checkHttp(Realurl));
+            HttpURLConnection http = (HttpURLConnection)url.openConnection();
+            int statusCode = http.getResponseCode();
+            return Realurl;
+        }catch (Exception e){
+            return "유효한 주소가 아닙니다.";
         }
     }
 }

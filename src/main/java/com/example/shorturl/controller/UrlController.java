@@ -21,7 +21,7 @@ public class UrlController {
     private final UrlService urlService;
 
     @PostMapping("url")
-    public ResponseEntity<String> addUrl(@RequestBody UrlRequestDto.Create create){
+    public ResponseEntity<String> addUrl(@RequestBody UrlRequestDto.Create create) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body("http://url.govpped.com/url/"+urlService.addUrl(create));
     }
 
