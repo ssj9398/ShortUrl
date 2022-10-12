@@ -1,6 +1,16 @@
+### url 등록
 POST localhost/url
 Content-Type: application/json
 
 {
   "url": "https://naver.com"
 }
+> {%
+ client.global.set("url", response.body);
+ %}
+
+### 최근 등록 된 url 10개 조회
+GET localhost/url
+
+### url 상세 정보 및 redirect
+GET localhost/url/{{url}}
