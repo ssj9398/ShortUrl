@@ -9,11 +9,14 @@ public class UrlRequestDto {
     public static class Create{
         private String url;
 
-        public UrlInfo toEntity(String fakeUrl, String realUrl){
+        private boolean openStatus;
+
+        public UrlInfo toEntity(String fakeUrl){
             return UrlInfo.builder()
-                    .realUrl(realUrl)
+                    .realUrl(url)
                     .fakeUrl(fakeUrl)
                     .visitCount(0L)
+                    .openStatus(openStatus)
                     .build();
         }
     }

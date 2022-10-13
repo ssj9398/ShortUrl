@@ -31,7 +31,7 @@ public class UrlServiceImpl implements UrlService{
     @Transactional
     public String addUrl(UrlRequestDto.Create create) {
             checkValidUrl(create.getUrl());
-            return urlRepository.save(create.toEntity(makeFakeUrl(), checkHttp(create.getUrl()))).getFakeUrl();
+            return urlRepository.save(create.toEntity(makeFakeUrl())).getFakeUrl();
     }
 
     @Override
