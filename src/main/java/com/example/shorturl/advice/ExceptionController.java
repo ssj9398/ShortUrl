@@ -16,6 +16,6 @@ public class ExceptionController {
         Fail fail = Fail.builder()
                 .msg(e.getMessage())
                 .build();
-        return new ResponseEntity<>(fail, HttpStatus.OK);
+        return new ResponseEntity<>(fail, HttpStatus.BAD_REQUEST);
     }
 }
