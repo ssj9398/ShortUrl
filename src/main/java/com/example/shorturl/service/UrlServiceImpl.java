@@ -1,5 +1,6 @@
 package com.example.shorturl.service;
 
+import com.example.shorturl.advice.exception.ApiRequestException;
 import com.example.shorturl.domain.UrlInfo;
 import com.example.shorturl.dto.UrlRequestDto;
 import com.example.shorturl.dto.UrlResponseDto;
@@ -28,16 +29,9 @@ public class UrlServiceImpl implements UrlService{
 
     @Override
     @Transactional
-    public String addUrl(UrlRequestDto.Create create) throws IOException {
-            String checkValidUrl = checkValidUrl(create.getUrl());
-            log.info("checkValidUrl" + checkValidUrl);
-            if(checkValidUrl!="유효한 주소가 아닙니다."){
-                log.info("aaaaaaaaaaaa");
-            }else {
-                log.info("bbbbbbbb");
-                urlRepository.save(create.toEntity(makeFakeUrl(), checkHttp(create.getUrl()))).getFakeUrl();
-            }
-            return "";
+    public String addUrl(UrlRequestDto.Create create) {
+            checkValidUrl(create.getUrl());
+            return urlRepository.save(create.toEntity(makeFakeUrl(), checkHttp(create.getUrl()))).getFakeUrl();
     }
 
     @Override
@@ -85,14 +79,14 @@ public class UrlServiceImpl implements UrlService{
         }
     }
 
-    public String checkValidUrl(String Realurl) throws IOException {
+    public String checkValidUrl(String realUrl) {
         try {
-            URL url = new URL(checkHttp(Realurl));
+            URL url = new URL(checkHttp(realUrl));
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
             int statusCode = http.getResponseCode();
-            return Realurl;
+            return realUrl;
         }catch (Exception e){
-            return "유효한 주소가 아닙니다.";
+            throw new ApiRequestException("유효하지 않은 주소 입니다.");
         }
     }
 }

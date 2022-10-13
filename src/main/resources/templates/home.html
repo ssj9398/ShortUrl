@@ -121,28 +121,32 @@
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (response) {
+                console.log("response++" + response.toString());
+                let http = "http";
+                let includes = response.includes(http);
+
+                console.log("aaa" + includes);
                 console.log("response = " + response["msg"]);
                 console.log("response++" + response);
-                if(response!==object){
-                    ('input[id=shortUrl]').attr('value', response);
+
+                if(includes == true){
+                    $('#shortUrl').attr('value', response);
                     copyUrl();
                     temp_html = `<div class="wrap">
-    <div class="posting-box">
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="주소를 입력해주세요" readonly onkeydown="enterKey()" value=http://${inputText}>
-        </div>
-        <div class="form-group">
-            <input type="text"  class="form-control" placeholder="단축 Url 생성 시 주소가 생겨요" readonly value=${response}>
-        </div>
-    </div>
-</div>`
+                                    <div class="posting-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="주소를 입력해주세요" readonly onkeydown="enterKey()" value=http://${inputText}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text"  class="form-control" placeholder="단축 Url 생성 시 주소가 생겨요" readonly value=${response}>
+                                        </div>
+                                    </div>
+                                </div>`
                     $('.h3').append(temp_html);
-                }else {
-                    alert(response["msg"]);
                 }
                 $
-            }, error: function (error) {
-                console.log(error.get().error());
+            }, error: function () {
+                alert("잘못된 주소입니다.");
             }
         });
     }
