@@ -30,8 +30,9 @@ public class UrlServiceImpl implements UrlService{
     @Override
     @Transactional
     public String addUrl(UrlRequestDto.Create create) {
-            checkValidUrl(create.getUrl());
-            return urlRepository.save(create.toEntity(makeFakeUrl())).getFakeUrl();
+        String url = checkValidUrl(create.getUrl());
+        create.isOpenStatus();
+            return urlRepository.save(create.toEntity(makeFakeUrl(), url)).getFakeUrl();
     }
 
     @Override
@@ -84,7 +85,7 @@ public class UrlServiceImpl implements UrlService{
             URL url = new URL(checkHttp(realUrl));
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
             int statusCode = http.getResponseCode();
-            return realUrl;
+            return "http://"+realUrl;
         }catch (Exception e){
             throw new ApiRequestException("유효하지 않은 주소 입니다.");
         }
