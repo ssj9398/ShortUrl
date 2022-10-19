@@ -48,7 +48,7 @@ public class UrlServiceImpl implements UrlService{
 
     @Override
     public List<UrlResponseDto> getTopTenUrlList() {
-        return urlRepository.findTop10ByOpenStatusOrderByCreatedAtDesc(true).stream()
+        return urlRepository.findTop10ByOpenStatusOrderByCreatedAtDesc(false).stream()
                 .map(UrlResponseDto::new)
                 .collect(Collectors.toList());
     }
@@ -73,7 +73,7 @@ public class UrlServiceImpl implements UrlService{
     }
 
     public String checkHttp(String url){
-        if(url.indexOf("http")==-1){
+        if(url.contains("http")==false){
             return "http://"+url;
         }else {
             return url;
@@ -83,9 +83,8 @@ public class UrlServiceImpl implements UrlService{
     public String checkValidUrl(String realUrl) {
         try {
             URL url = new URL(checkHttp(realUrl));
-            HttpURLConnection http = (HttpURLConnection)url.openConnection();
-            int statusCode = http.getResponseCode();
-            return "http://"+realUrl;
+            url.openConnection();
+            return url.toString();
         }catch (Exception e){
             throw new ApiRequestException("유효하지 않은 주소 입니다.");
         }
