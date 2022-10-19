@@ -68,6 +68,19 @@
 </div>
 </body>
 <script>
+    window.addEventListener('load',()=>{
+        let param = searchParam('url');
+        console.log("param = " + param);
+        $('input[id=inputText]').attr('value',param);
+        if(param!="") {
+            shortUrlDetails();
+        }
+    });
+
+    function searchParam(key) {
+        return new URLSearchParams(location.search).get(key);
+    };
+
     function shortUrlDetails() {
         const inputText = document.getElementById('inputText').value;
 
