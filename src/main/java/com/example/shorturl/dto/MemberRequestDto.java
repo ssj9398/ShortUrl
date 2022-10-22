@@ -10,4 +10,11 @@ public class MemberRequestDto {
 
         private String password;
     }
+
+    @Getter
+    public static class Login{
+        private String email;
+
+        private String password;
+    }
 }

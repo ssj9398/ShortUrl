@@ -31,4 +31,12 @@ public class MemberServiceImpl implements MemberService{
         }
 
     }
+
+    @Override
+    public void loginMember(MemberRequestDto.Login login) {
+        Optional<Member> optMemberByEmailAndPassword = memberRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
+        if(optMemberByEmailAndPassword.isEmpty()){
+            throw new ApiRequestException("존재하지 않는 회원입니다.");
+        }
+    }
 }
