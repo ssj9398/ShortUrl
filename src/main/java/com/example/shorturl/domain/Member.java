@@ -22,4 +22,13 @@ public class Member {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    private Member(String email, String password){
+        this.email = email;
+        this.password = password;
+    }
+
+    public static Member createMember(String email, String password){
+        return new Member(email, password);
+    }
 }
