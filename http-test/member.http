@@ -1,8 +1,18 @@
-## 회원가입
-POST localhost/member
+### 회원가입
+POST localhost/member/join
 Content-Type: application/json
 
 {
   "email": "test@naver.com",
   "password": "1234"
+}
+
+
+### 로그인
+POST localhost/member/login
+Content-Type: application/json
+
+{
+"email": "test@naver.co",
+"password": "1234"
 }
