@@ -7,6 +7,7 @@ import com.example.shorturl.dto.UrlResponseDto;
 import com.example.shorturl.repository.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -88,5 +91,27 @@ public class UrlServiceImpl implements UrlService{
         }catch (Exception e){
             throw new ApiRequestException("유효하지 않은 주소 입니다.");
         }
+    }
+
+    @Scheduled(cron = "0 0 24 * * *") //정시마다
+    @Transactional
+    public void urlJob() {
+        deleteUrlByMoreThanTwoDay();
+    }
+
+    private void deleteUrlByMoreThanTwoDay() {
+        List<UrlInfo> urlInfoList = urlRepository.findAll();
+        urlInfoList.forEach((url -> {
+            if(compareDay(LocalDateTime.now(), url.getCreatedAt())>1){
+                urlRepository.deleteById(url.getId());
+            }
+        }));
+    }
+
+    public static int compareDay(LocalDateTime date1, LocalDateTime date2) {
+        LocalDateTime dayDate1 = date1.truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime dayDate2 = date2.truncatedTo(ChronoUnit.DAYS);
+        int compareResult = dayDate1.compareTo(dayDate2);
+        return compareResult;
     }
 }
