@@ -51,7 +51,7 @@ public class UrlServiceImpl implements UrlService{
 
     @Override
     public List<UrlResponseDto> getTopTenUrlList() {
-        return urlRepository.findTop10ByOpenStatusOrderByCreatedAtDesc(false).stream()
+        return urlRepository.findTop10ByOpenStatusOrderByCreatedAtDesc(true).stream()
                 .map(UrlResponseDto::new)
                 .collect(Collectors.toList());
     }
