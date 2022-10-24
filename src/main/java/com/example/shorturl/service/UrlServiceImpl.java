@@ -93,7 +93,7 @@ public class UrlServiceImpl implements UrlService{
         }
     }
 
-    @Scheduled(cron = "0 0 24 * * *") //정시마다
+    @Scheduled(cron = "0 0 0 * * *") //정시마다
     @Transactional
     public void urlJob() {
         deleteUrlByMoreThanTwoDay();
