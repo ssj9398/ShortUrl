@@ -35,7 +35,11 @@ public class UrlInfo extends Timestamped {
     private Long visitCount;
 
     @Column(name = "open_status", nullable = false)
-    private boolean openStatus;
+    private boolean openStatus = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Builder
     public UrlInfo(String realUrl, String fakeUrl, Long visitCount, boolean openStatus) {
