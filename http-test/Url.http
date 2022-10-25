@@ -3,7 +3,8 @@ POST localhost/url
 Content-Type: application/json
 
 {
-  "url": "https://naver.com"
+  "url": "naver.com",
+  "openStatus": true
 }
 > {%
  client.global.set("url", response.body);
