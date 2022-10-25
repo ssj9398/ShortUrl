@@ -22,7 +22,7 @@ public class UrlController {
 
     @PostMapping("url")
     public ResponseEntity<String> addUrl(@RequestBody UrlRequestDto.Create create) throws IOException {
-        return ResponseEntity.status(HttpStatus.CREATED).body("http://url.govpped.com/url/"+urlService.addUrl(create));
+        return ResponseEntity.status(HttpStatus.CREATED).body("http://localhost/url/"+urlService.addUrl(create));
     }
 
     @GetMapping("url")
