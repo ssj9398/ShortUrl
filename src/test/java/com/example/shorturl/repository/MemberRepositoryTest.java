@@ -27,15 +27,33 @@ class MemberRepositoryTest {
 
     @Test
     void findByEmail() {
+        //given
+        String email = "test2@google.com";
+        String password = "test123";
+        Member member = Member.createMember(email, password);
+        memberRepository.save(member);
+
         //when
-        Optional<Member> optMember = memberRepository.findByEmail("test@google.com");
+        Optional<Member> optMember = memberRepository.findByEmail(email);
 
         //then
-        assertThat(optMember.get().getEmail()).isEqualTo("test@google.com");
-        assertThat(optMember.get().getPassword()).isEqualTo("test1234");
+        assertThat(optMember.get().getEmail()).isEqualTo("test2@google.com");
+        assertThat(optMember.get().getPassword()).isEqualTo("test123");
     }
 
     @Test
     void findByEmailAndPassword() {
+        //given
+        String email = "test2@google.com";
+        String password = "test123";
+        Member member = Member.createMember(email, password);
+        memberRepository.save(member);
+
+        //when
+        Optional<Member> optMember = memberRepository.findByEmailAndPassword(email, password);
+
+        //then
+        assertThat(optMember.get().getEmail()).isEqualTo("test2@google.com");
+        assertThat(optMember.get().getPassword()).isEqualTo("test123");
     }
 }
