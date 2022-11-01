@@ -27,5 +27,8 @@ class UrlRepositoryTest {
 
         //then
         assertThat(saveUrlInfo.getFakeUrl()).isEqualTo(urlInfo.getFakeUrl());
+        assertThat(saveUrlInfo.getRealUrl()).isEqualTo(urlInfo.getRealUrl());
+        assertThat(saveUrlInfo.isOpenStatus()).isEqualTo(urlInfo.isOpenStatus());
+
     }
 }
