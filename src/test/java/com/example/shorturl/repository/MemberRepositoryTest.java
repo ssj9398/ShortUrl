@@ -1,12 +1,15 @@
 package com.example.shorturl.repository;
 
 import com.example.shorturl.domain.Member;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
 class MemberRepositoryTest {
@@ -15,7 +18,7 @@ class MemberRepositoryTest {
     private MemberRepository memberRepository;
 
     @BeforeEach //테스트 시작전 한번씩 실행
-    public void 데이터준비(){
+    void 데이터준비(){
         String email = "test@google.com";
         String password = "test1234";
         Member member = Member.createMember(email, password);
@@ -24,6 +27,12 @@ class MemberRepositoryTest {
 
     @Test
     void findByEmail() {
+        //when
+        Optional<Member> optMember = memberRepository.findByEmail("test@google.com");
+
+        //then
+        assertThat(optMember.get().getEmail()).isEqualTo("test@google.com");
+        assertThat(optMember.get().getPassword()).isEqualTo("test1234");
     }
 
     @Test
