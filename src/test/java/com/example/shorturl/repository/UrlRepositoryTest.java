@@ -78,6 +78,23 @@ class UrlRepositoryTest {
         assertThat(urlTopTenList.get(0).isOpenStatus()).isEqualTo(urlInfoList.get(0).isOpenStatus());
         assertThat(urlTopTenList.stream().findFirst().get().getId()).isEqualTo(urlInfoList.stream().skip(urlInfoList.size()-1).findFirst().get().getId());
         assertThat(urlTopTenList.stream().findFirst().get().getId()).isEqualTo(11L);
+    }
 
+    @Test
+    void 주소삭제(){
+        //given
+        UrlInfo urlInfo = UrlInfo.builder()
+                .realUrl("naver.com")
+                .fakeUrl("localhost/a")
+                .openStatus(true)
+                .build();
+        UrlInfo saveUrlInfo = urlRepository.save(urlInfo);
+
+        //when
+        urlRepository.deleteById(saveUrlInfo.getId());
+
+        //then
+        assertThat(urlRepository.findByFakeUrl(saveUrlInfo.getFakeUrl())).isEmpty();
+        assertThat(urlRepository.findById(saveUrlInfo.getId())).isEmpty();
     }
 }
