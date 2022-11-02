@@ -89,7 +89,22 @@ class MemberRepositoryTest {
 
         //then
         assertThat(saveMember.getPassword()).isEqualTo(changePassword);
+    }
 
+    @Test
+    void 회원삭제(){
+        //given
+        String email = "test2@google.com";
+        String password = "test1234";
 
+        Member member = Member.createMember(email, password);
+        Member saveMember = memberRepository.save(member);
+
+        //when
+        memberRepository.deleteById(saveMember.getId());
+
+        //then
+        assertThat(memberRepository.findById(saveMember.getId())).isEmpty();
+        assertThat(memberRepository.findByEmail(saveMember.getEmail())).isEmpty();
     }
 }
