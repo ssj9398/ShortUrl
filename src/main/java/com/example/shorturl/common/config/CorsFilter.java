@@ -1,4 +1,4 @@
-package com.example.shorturl.config;
+package com.example.shorturl.common.config;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

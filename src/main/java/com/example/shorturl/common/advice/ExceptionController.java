@@ -1,6 +1,6 @@
-package com.example.shorturl.advice;
+package com.example.shorturl.common.advice;
 
-import com.example.shorturl.advice.exception.ApiRequestException;
+import com.example.shorturl.common.advice.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

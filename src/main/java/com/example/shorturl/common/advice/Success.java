@@ -1,4 +1,4 @@
-package com.example.shorturl.advice;
+package com.example.shorturl.common.advice;
 
 import lombok.Getter;
 

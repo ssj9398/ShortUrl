@@ -1,6 +1,6 @@
 package com.example.shorturl.service.member;
 
-import com.example.shorturl.advice.exception.ApiRequestException;
+import com.example.shorturl.common.advice.exception.ApiRequestException;
 import com.example.shorturl.domain.Member;
 import com.example.shorturl.dto.request.MemberRequestDto;
 import com.example.shorturl.repository.MemberRepository;

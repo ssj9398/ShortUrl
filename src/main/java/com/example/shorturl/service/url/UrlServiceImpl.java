@@ -1,6 +1,6 @@
 package com.example.shorturl.service.url;
 
-import com.example.shorturl.advice.exception.ApiRequestException;
+import com.example.shorturl.common.advice.exception.ApiRequestException;
 import com.example.shorturl.domain.UrlInfo;
 import com.example.shorturl.dto.request.UrlRequestDto;
 import com.example.shorturl.dto.response.UrlResponseDto;

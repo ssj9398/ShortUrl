@@ -1,4 +1,4 @@
-package com.example.shorturl.advice.exception;
+package com.example.shorturl.common.advice.exception;
 
 public class ApiRequestException extends RuntimeException{
     public ApiRequestException(String message) {

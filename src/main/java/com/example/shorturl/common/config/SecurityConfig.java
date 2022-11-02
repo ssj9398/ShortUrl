@@ -1,4 +1,4 @@
-package com.example.shorturl.config;
+package com.example.shorturl.common.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

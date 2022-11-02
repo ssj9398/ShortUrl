@@ -1,6 +1,6 @@
 package com.example.shorturl.controller;
 
-import com.example.shorturl.advice.Success;
+import com.example.shorturl.common.advice.Success;
 import com.example.shorturl.dto.request.MemberRequestDto;
 import com.example.shorturl.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
