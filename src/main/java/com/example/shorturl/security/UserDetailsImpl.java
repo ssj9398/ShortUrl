@@ -1,4 +1,4 @@
-package com.example.shorturl.service.user;
+package com.example.shorturl.security;
 
 import com.example.shorturl.domain.Member;
 import org.springframework.security.core.GrantedAuthority;
