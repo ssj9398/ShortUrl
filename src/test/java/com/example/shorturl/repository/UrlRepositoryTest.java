@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
@@ -50,5 +53,31 @@ class UrlRepositoryTest {
         assertThat(url.getRealUrl()).isEqualTo(urlInfo.getRealUrl());
         assertThat(url.getCreatedAt()).isEqualTo(urlInfo.getCreatedAt());
         assertThat(url.getVisitCount()).isEqualTo(urlInfo.getVisitCount());
+    }
+
+    @Test
+    void 탑텐최신순조회(){
+        //given
+        List<UrlInfo> urlList = new ArrayList<>();
+        for(int i=11; i>0; i--){
+            UrlInfo urlInfo = UrlInfo.builder()
+                    .realUrl("google.com"+i)
+                    .fakeUrl("localhost/abcdef"+i)
+                    .openStatus(true)
+                    .build();
+            urlList.add(urlInfo);
+        }
+        List<UrlInfo> urlInfoList = urlRepository.saveAll(urlList);
+
+        //when
+        List<UrlInfo> urlTopTenList = urlRepository.findTop10ByOpenStatusOrderByCreatedAtDesc(true);
+
+        //then
+        assertThat(urlInfoList.size()).isEqualTo(11);
+        assertThat(urlTopTenList.size()).isEqualTo(10);
+        assertThat(urlTopTenList.get(0).isOpenStatus()).isEqualTo(urlInfoList.get(0).isOpenStatus());
+        assertThat(urlTopTenList.stream().findFirst().get().getId()).isEqualTo(urlInfoList.stream().skip(urlInfoList.size()-1).findFirst().get().getId());
+        assertThat(urlTopTenList.stream().findFirst().get().getId()).isEqualTo(11L);
+
     }
 }
