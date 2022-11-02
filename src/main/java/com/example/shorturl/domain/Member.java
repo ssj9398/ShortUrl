@@ -31,4 +31,8 @@ public class Member {
     public static Member createMember(String email, String password){
         return new Member(email, password);
     }
+
+    public void updateMemberPassword(String changePassword) {
+        this.password = changePassword;
+    }
 }

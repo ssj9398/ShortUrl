@@ -72,4 +72,24 @@ class MemberRepositoryTest {
         assertThat(saveMember.getPassword()).isEqualTo(password);
 
     }
+
+    @Test
+    void 회원비밀번호수정(){
+        //given
+        String email = "test@google.com";
+        String password = "test1234";
+
+        String changePassword = "test1234567";
+
+        Member member = Member.createMember(email, password);
+        Member saveMember = memberRepository.save(member);
+
+        //when
+        saveMember.updateMemberPassword(changePassword);
+
+        //then
+        assertThat(saveMember.getPassword()).isEqualTo(changePassword);
+
+
+    }
 }
