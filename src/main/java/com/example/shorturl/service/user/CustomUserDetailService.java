@@ -1,4 +1,4 @@
-package com.example.shorturl.service;
+package com.example.shorturl.service.user;
 
 import com.example.shorturl.domain.Member;
 import com.example.shorturl.repository.MemberRepository;

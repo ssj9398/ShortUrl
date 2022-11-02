@@ -1,4 +1,4 @@
-package com.example.shorturl.dto;
+package com.example.shorturl.dto.request;
 
 import lombok.Getter;
 

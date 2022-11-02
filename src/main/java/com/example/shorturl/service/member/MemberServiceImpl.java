@@ -1,8 +1,8 @@
-package com.example.shorturl.service;
+package com.example.shorturl.service.member;
 
 import com.example.shorturl.advice.exception.ApiRequestException;
 import com.example.shorturl.domain.Member;
-import com.example.shorturl.dto.MemberRequestDto;
+import com.example.shorturl.dto.request.MemberRequestDto;
 import com.example.shorturl.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;

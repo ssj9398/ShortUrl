@@ -32,7 +32,7 @@ public class UrlInfo extends Timestamped {
     //방문자수
     @Column(name = "visit_count")
     @ColumnDefault("0")
-    private Long visitCount;
+    private Long visitCount = 0L;
 
     @Column(name = "open_status", nullable = false)
     private boolean openStatus = false;

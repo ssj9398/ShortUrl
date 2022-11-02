@@ -1,6 +1,6 @@
-package com.example.shorturl.service;
+package com.example.shorturl.service.member;
 
-import com.example.shorturl.dto.MemberRequestDto;
+import com.example.shorturl.dto.request.MemberRequestDto;
 
 public interface MemberService {
     void addMember(MemberRequestDto.Create create);

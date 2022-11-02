@@ -1,9 +1,9 @@
-package com.example.shorturl.service;
+package com.example.shorturl.service.url;
 
 import com.example.shorturl.advice.exception.ApiRequestException;
 import com.example.shorturl.domain.UrlInfo;
-import com.example.shorturl.dto.UrlRequestDto;
-import com.example.shorturl.dto.UrlResponseDto;
+import com.example.shorturl.dto.request.UrlRequestDto;
+import com.example.shorturl.dto.response.UrlResponseDto;
 import com.example.shorturl.repository.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +11,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

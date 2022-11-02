@@ -1,10 +1,9 @@
 package com.example.shorturl.controller;
 
 import com.example.shorturl.advice.Success;
-import com.example.shorturl.domain.UrlInfo;
-import com.example.shorturl.dto.UrlRequestDto;
-import com.example.shorturl.dto.UrlResponseDto;
-import com.example.shorturl.service.UrlService;
+import com.example.shorturl.dto.request.UrlRequestDto;
+import com.example.shorturl.dto.response.UrlResponseDto;
+import com.example.shorturl.service.url.UrlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

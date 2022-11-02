@@ -1,4 +1,4 @@
-package com.example.shorturl.dto;
+package com.example.shorturl.dto.response;
 
 import com.example.shorturl.domain.UrlInfo;
 import lombok.Getter;

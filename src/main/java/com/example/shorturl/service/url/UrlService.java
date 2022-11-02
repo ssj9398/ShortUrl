@@ -1,8 +1,8 @@
-package com.example.shorturl.service;
+package com.example.shorturl.service.url;
 
 import com.example.shorturl.domain.UrlInfo;
-import com.example.shorturl.dto.UrlRequestDto;
-import com.example.shorturl.dto.UrlResponseDto;
+import com.example.shorturl.dto.request.UrlRequestDto;
+import com.example.shorturl.dto.response.UrlResponseDto;
 
 import java.io.IOException;
 import java.util.List;
