@@ -97,4 +97,29 @@ class UrlRepositoryTest {
         assertThat(urlRepository.findByFakeUrl(saveUrlInfo.getFakeUrl())).isEmpty();
         assertThat(urlRepository.findById(saveUrlInfo.getId())).isEmpty();
     }
+
+    @Test
+    void 주소전체조회(){
+        //given
+        List<UrlInfo> urlInfoList = new ArrayList<>();
+        for(int i=0; i<10; i++){
+            UrlInfo urlInfo = UrlInfo.builder()
+                    .realUrl("naver.com"+i)
+                    .fakeUrl("localhost/a"+i)
+                    .openStatus(true)
+                    .build();
+            urlInfoList.add(urlInfo);
+        }urlRepository.saveAll(urlInfoList);
+
+        //when
+        List<UrlInfo> allUrlList = urlRepository.findAll();
+
+        //then
+        assertThat(allUrlList.get(0).getRealUrl()).isEqualTo("naver.com0");
+        assertThat(allUrlList.get(0).getFakeUrl()).isEqualTo("localhost/a0");
+
+        assertThat(allUrlList.get(1).getRealUrl()).isEqualTo("naver.com1");
+        assertThat(allUrlList.get(1).getFakeUrl()).isEqualTo("localhost/a1");
+
+    }
 }
