@@ -55,7 +55,7 @@
 <body>
 <div class="wrap">
     <div class="posting-box">
-        <button id="loginButton" class="btn btn-primary" onclick="makeShortUrl()">로그인</button>
+        <button id="loginButton" class="btn btn-primary" onclick="login()">로그인</button>
         <div class="form-group">
             <input type="text" id="inputText" class="form-control" placeholder="주소를 입력해주세요" onkeydown="enterKey()">
         </div>
@@ -185,6 +185,10 @@
 
     function details() {
         location.href = "detail?"+"url="+shortUrl.value;
+    }
+
+    function login(){
+        location.href = "login"
     }
 </script>
 </html>

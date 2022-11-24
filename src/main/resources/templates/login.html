@@ -57,6 +57,7 @@
 <div class="wrap">
     <div class="posting-box">
         <button id="loginButton" class="btn btn-primary" onclick="main()">메인으로</button>
+        <button id="join" class="btn btn-primary" onclick="join()">회원가입</button>
         <div class="form-group">
             <input type="text" id="id" class="form-control" placeholder="id를 입력해주세요">
         </div>
@@ -65,7 +66,7 @@
         </div>
 
         <button id="login" class="btn btn-primary" onclick="login()">로그인</button>
-        <button id="join" class="btn btn-primary" onclick="makeShortUrl()">회원가입</button>
+
     </div>
 </div>
 </body>
@@ -95,6 +96,10 @@
 
     function main(){
         location.href = "home"
+    }
+
+    function join(){
+        location.href = "join"
     }
 </script>
 </html>
