@@ -4,6 +4,7 @@ import com.example.shorturl.domain.UrlInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,7 @@ class UrlRepositoryTest {
     }
 
     @Test
+    @Sql("classpath:db/tableInit.sql")
     void 탑텐최신순조회(){
         //given
         List<UrlInfo> urlList = new ArrayList<>();
