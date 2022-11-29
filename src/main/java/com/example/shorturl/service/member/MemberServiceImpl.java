@@ -24,11 +24,11 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     @Transactional
-    public void addMember(MemberRequestDto.Create create) {
+    public Member addMember(MemberRequestDto.Create create) {
         Optional<Member> optMember = memberRepository.findByEmail(create.getEmail());
         if(optMember.isEmpty()){
             Member member = Member.createMember(create.getEmail(), passwordEncoder.encode(create.getPassword()));
-            memberRepository.save(member);
+            return memberRepository.save(member);
         }else {
             throw  new ApiRequestException("이미 존재하는 회원입니다.");
         }
