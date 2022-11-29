@@ -1,6 +1,7 @@
 package com.example.shorturl.repository;
 
 import com.example.shorturl.domain.UrlInfo;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,6 +19,7 @@ class UrlRepositoryTest {
     private UrlRepository urlRepository;
 
     @Test
+    @DisplayName("주소저장")
     void 주소저장(){
         //given
         UrlInfo urlInfo = UrlInfo.builder()
@@ -36,6 +38,7 @@ class UrlRepositoryTest {
     }
 
     @Test
+    @DisplayName("미로그인_가짜주소로찾기")
     void 미로그인_가짜주소로찾기(){
         //given
         UrlInfo urlInfo = UrlInfo.builder()
@@ -57,6 +60,7 @@ class UrlRepositoryTest {
     }
 
     @Test
+    @DisplayName("탑텐최신순조회")
     @Sql("classpath:db/tableInit.sql")
     void 탑텐최신순조회(){
         //given
@@ -83,6 +87,7 @@ class UrlRepositoryTest {
     }
 
     @Test
+    @DisplayName("주소삭제")
     void 주소삭제(){
         //given
         UrlInfo urlInfo = UrlInfo.builder()
