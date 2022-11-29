@@ -80,7 +80,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/api/member/login",
+            url: "http://localhost:8081/api/member/login",
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (response) {
