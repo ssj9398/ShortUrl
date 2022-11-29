@@ -92,7 +92,7 @@
     window.addEventListener('load', () => {
         $.ajax({
             type: "GET",
-            url: "http://localhost/url",
+            url: "http://localhost:8081/url",
             contentType: 'application/json',
             success: function (response) {
                 let data = response["data"];
@@ -143,7 +143,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/url",
+            url: "http://localhost:8081/url",
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (response) {

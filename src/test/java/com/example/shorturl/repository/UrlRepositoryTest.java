@@ -43,13 +43,13 @@ class UrlRepositoryTest {
         //given
         UrlInfo urlInfo = UrlInfo.builder()
                 .realUrl("google.com")
-                .fakeUrl("localhost/abcdef")
+                .fakeUrl("localhost:8081/abcdef")
                 .openStatus(true)
                 .build();
         UrlInfo saveUrlInfo = urlRepository.save(urlInfo);
 
         //when
-        UrlInfo url = urlRepository.findByFakeUrl("localhost/abcdef").get();
+        UrlInfo url = urlRepository.findByFakeUrl("localhost:8081/abcdef").get();
 
         //then
         assertThat(url.getId()).isEqualTo(saveUrlInfo.getId());
@@ -68,7 +68,7 @@ class UrlRepositoryTest {
         for(int i=11; i>0; i--){
             UrlInfo urlInfo = UrlInfo.builder()
                     .realUrl("google.com"+i)
-                    .fakeUrl("localhost/abcdef"+i)
+                    .fakeUrl("localhost:8081/abcdef"+i)
                     .openStatus(true)
                     .build();
             urlList.add(urlInfo);
@@ -92,7 +92,7 @@ class UrlRepositoryTest {
         //given
         UrlInfo urlInfo = UrlInfo.builder()
                 .realUrl("naver.com")
-                .fakeUrl("localhost/a")
+                .fakeUrl("localhost:8081/a")
                 .openStatus(true)
                 .build();
         UrlInfo saveUrlInfo = urlRepository.save(urlInfo);
@@ -112,7 +112,7 @@ class UrlRepositoryTest {
         for(int i=0; i<10; i++){
             UrlInfo urlInfo = UrlInfo.builder()
                     .realUrl("naver.com"+i)
-                    .fakeUrl("localhost/a"+i)
+                    .fakeUrl("localhost:8081/a"+i)
                     .openStatus(true)
                     .build();
             urlInfoList.add(urlInfo);
@@ -123,10 +123,10 @@ class UrlRepositoryTest {
 
         //then
         assertThat(allUrlList.get(0).getRealUrl()).isEqualTo("naver.com0");
-        assertThat(allUrlList.get(0).getFakeUrl()).isEqualTo("localhost/a0");
+        assertThat(allUrlList.get(0).getFakeUrl()).isEqualTo("localhost:8081/a0");
 
         assertThat(allUrlList.get(1).getRealUrl()).isEqualTo("naver.com1");
-        assertThat(allUrlList.get(1).getFakeUrl()).isEqualTo("localhost/a1");
+        assertThat(allUrlList.get(1).getFakeUrl()).isEqualTo("localhost:8081/a1");
 
     }
 }
