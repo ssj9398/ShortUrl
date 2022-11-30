@@ -1,14 +1,18 @@
 package com.example.shorturl.controller;
 
 import com.example.shorturl.common.advice.Success;
+import com.example.shorturl.domain.UrlInfo;
 import com.example.shorturl.dto.request.UrlRequestDto;
 import com.example.shorturl.dto.response.UrlResponseDto;
 import com.example.shorturl.service.url.UrlService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -17,6 +21,8 @@ import java.io.IOException;
 public class UrlController {
 
     private final UrlService urlService;
+
+    private final RedisTemplate redisTemplate;
 
     @PostMapping("url")
     public ResponseEntity<String> addUrl(@RequestBody UrlRequestDto.Create create) throws IOException {
@@ -37,5 +43,19 @@ public class UrlController {
             return new UrlResponseDto(urlService.getUrlInfo(url));
         }
         return null;
+    }
+
+    @PostConstruct
+    public void test(){
+        UrlInfo urlInfo = UrlInfo.builder()
+                .realUrl("real")
+                .fakeUrl("fake")
+                .visitCount(1L)
+                .build();
+        ValueOperations<String, Object> values = redisTemplate.opsForValue();
+        values.set("1",urlInfo);
+        Object o = values.get("1");
+        System.out.println("1 = " +o);
+        System.out.println("2 = " + o.toString());
     }
 }
