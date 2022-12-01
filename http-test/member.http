@@ -1,5 +1,5 @@
 ### 회원가입
-POST localhost/member/join
+POST localhost:8081/member/join
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 
 
 ### 로그인
-POST localhost/member/login
+POST localhost:8081/member/login
 Content-Type: application/json
 
 {
