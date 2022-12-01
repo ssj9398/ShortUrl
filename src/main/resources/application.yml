@@ -10,6 +10,10 @@ spring:
     # DB password
     password: 1234
 
+  redis:
+    port: 6379
+    host: localhost
+
   jpa:
     hibernate:
       ddl-auto: create
