@@ -22,8 +22,6 @@ public class UrlController {
 
     private final UrlService urlService;
 
-    private final RedisTemplate redisTemplate;
-
     @PostMapping("url")
     public ResponseEntity<String> addUrl(@RequestBody UrlRequestDto.Create create) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body("http://localhost:8081/url/"+urlService.addUrl(create));
@@ -43,19 +41,5 @@ public class UrlController {
             return new UrlResponseDto(urlService.getUrlInfo(url));
         }
         return null;
-    }
-
-    @PostConstruct
-    public void test(){
-        UrlInfo urlInfo = UrlInfo.builder()
-                .realUrl("real")
-                .fakeUrl("fake")
-                .visitCount(1L)
-                .build();
-        ValueOperations<String, Object> values = redisTemplate.opsForValue();
-        values.set("1",urlInfo);
-        Object o = values.get("1");
-        System.out.println("1 = " +o);
-        System.out.println("2 = " + o.toString());
     }
 }

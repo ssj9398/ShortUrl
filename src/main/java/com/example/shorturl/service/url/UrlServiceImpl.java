@@ -7,6 +7,8 @@ import com.example.shorturl.dto.response.UrlResponseDto;
 import com.example.shorturl.repository.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,12 +29,23 @@ public class UrlServiceImpl implements UrlService{
 
     private final UrlRepository urlRepository;
 
+    private final RedisTemplate<String, Object> redisTemplate;
+
     @Override
     @Transactional
     public String addUrl(UrlRequestDto.Create create) {
         String url = checkValidUrl(create.getUrl());
         create.isOpenStatus();
-            return urlRepository.save(create.toEntity(makeFakeUrl(), url)).getFakeUrl();
+        UrlInfo urlInfo = create.toEntity(makeFakeUrl(), url);
+        UrlInfo makeUrl = saveUrlByRedis(urlInfo);
+        return makeUrl.getFakeUrl();
+        //return urlRepository.save(create.toEntity(makeFakeUrl(), url)).getFakeUrl();
+    }
+
+    public UrlInfo saveUrlByRedis(UrlInfo urlInfo){
+        ValueOperations<String, Object> values = redisTemplate.opsForValue();
+        values.set(String.valueOf(urlInfo.getId()), urlInfo);
+        return (UrlInfo) values.get(String.valueOf(urlInfo.getId()));
     }
 
     @Override
