@@ -46,11 +46,6 @@ public class UrlServiceImpl implements UrlService{
         return makeUrl.getFakeUrl();
     }
 
-    @Override
-    public UrlInfo getUrlInfoByRedis(String url) {
-        return null;
-    }
-
     public UrlInfo saveUrlByMysql(UrlInfo urlInfo){
         return urlRepository.save(urlInfo);
     }
@@ -70,6 +65,16 @@ public class UrlServiceImpl implements UrlService{
             return urlRepository.findByFakeUrl(url).get();
         }
         return urlRepository.findByFakeUrl(url.substring(0, url.length()-1)).get();
+    }
+
+    @Override
+    public UrlInfo getUrlInfoByRedis(String url) {
+        ValueOperations<String, Object> values = redisTemplate.opsForValue();
+        if(url.charAt(url.length() - 1)=='*'){
+            UrlInfo urlInfo = (UrlInfo) values.get(url.substring(0, url.length() - 1));
+            return urlInfo;
+        }
+        return (UrlInfo) values.get(url);
     }
 
     @Override

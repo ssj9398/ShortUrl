@@ -48,7 +48,7 @@ public class UrlController {
         return ResponseEntity.status(HttpStatus.CREATED).body("http://localhost:8081/url/"+urlService.addUrlByRedis(create));
     }
 
-    @GetMapping("url/{url}/redis")
+    @GetMapping("url/redis/{url}")
     public UrlResponseDto redirectUrlByRedis(HttpServletResponse response,
                                       @PathVariable String url) throws IOException {
         if(url.charAt(url.length() - 1)!='*'){

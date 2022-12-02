@@ -14,4 +14,19 @@ Content-Type: application/json
 GET localhost:8081/url
 
 ### url 상세 정보 및 redirect
-GET localhost:8081/url/{{url}}
+GET localhost:8081/url/jgyfzejrlq*
+
+### url 등록 - redis
+POST localhost:8081/url/redis
+Content-Type: application/json
+
+{
+  "url": "naver.com",
+  "openStatus": true
+}
+> {%
+ client.global.set("url", response.body);
+ %}
+
+### url 상세 정보 및 redirect
+GET localhost:8081/url/redis/tbpcwixfag*
