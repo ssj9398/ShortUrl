@@ -8,9 +8,13 @@ import java.io.IOException;
 import java.util.List;
 
 public interface UrlService {
-    String addUrl(UrlRequestDto.Create create) throws IOException;
+    String addUrlByMysql(UrlRequestDto.Create create) throws IOException;
 
     UrlInfo getUrlInfo(String url);
 
     List<UrlResponseDto> getTopTenUrlList();
+
+    String addUrlByRedis(UrlRequestDto.Create create);
+
+    UrlInfo getUrlInfoByRedis(String url);
 }

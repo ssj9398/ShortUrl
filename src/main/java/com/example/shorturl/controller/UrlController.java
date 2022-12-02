@@ -24,7 +24,7 @@ public class UrlController {
 
     @PostMapping("url")
     public ResponseEntity<String> addUrl(@RequestBody UrlRequestDto.Create create) throws IOException {
-        return ResponseEntity.status(HttpStatus.CREATED).body("http://localhost:8081/url/"+urlService.addUrl(create));
+        return ResponseEntity.status(HttpStatus.CREATED).body("http://localhost:8081/url/"+urlService.addUrlByMysql(create));
     }
 
     @GetMapping("url")
@@ -39,6 +39,22 @@ public class UrlController {
             response.sendRedirect(urlService.getUrlInfo(url).getRealUrl());
         }else {
             return new UrlResponseDto(urlService.getUrlInfo(url));
+        }
+        return null;
+    }
+
+    @PostMapping("url/redis")
+    public ResponseEntity<String> addUrlByRedis(@RequestBody UrlRequestDto.Create create) {
+        return ResponseEntity.status(HttpStatus.CREATED).body("http://localhost:8081/url/"+urlService.addUrlByRedis(create));
+    }
+
+    @GetMapping("url/{url}/redis")
+    public UrlResponseDto redirectUrlByRedis(HttpServletResponse response,
+                                      @PathVariable String url) throws IOException {
+        if(url.charAt(url.length() - 1)!='*'){
+            response.sendRedirect(urlService.getUrlInfoByRedis(url).getRealUrl());
+        }else {
+            return new UrlResponseDto(urlService.getUrlInfoByRedis(url));
         }
         return null;
     }

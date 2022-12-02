@@ -33,12 +33,22 @@ public class UrlServiceImpl implements UrlService{
 
     @Override
     @Transactional
-    public String addUrl(UrlRequestDto.Create create) {
+    public String addUrlByMysql(UrlRequestDto.Create create) {
+        String url = checkValidUrl(create.getUrl());
+        return saveUrlByMysql(create.toEntity(makeFakeUrl(), url)).getFakeUrl();
+    }
+
+    @Override
+    public String addUrlByRedis(UrlRequestDto.Create create) {
         String url = checkValidUrl(create.getUrl());
         UrlInfo urlInfo = create.toEntity(makeFakeUrl(), url);
         UrlInfo makeUrl = saveUrlByRedis(urlInfo);
         return makeUrl.getFakeUrl();
-        //return urlRepository.save(create.toEntity(makeFakeUrl(), url)).getFakeUrl();
+    }
+
+    @Override
+    public UrlInfo getUrlInfoByRedis(String url) {
+        return null;
     }
 
     public UrlInfo saveUrlByMysql(UrlInfo urlInfo){
