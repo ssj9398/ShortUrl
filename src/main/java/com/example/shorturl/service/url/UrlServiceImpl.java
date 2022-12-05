@@ -70,11 +70,10 @@ public class UrlServiceImpl implements UrlService{
     @Override
     public UrlInfo getUrlInfoByRedis(String url) {
         ValueOperations<String, Object> values = redisTemplate.opsForValue();
-        if(url.charAt(url.length() - 1)=='*'){
-            UrlInfo urlInfo = (UrlInfo) values.get(url.substring(0, url.length() - 1));
-            return urlInfo;
+        if(url.charAt(url.length() - 1)!='*'){
+            return (UrlInfo) values.get(url);
         }
-        return (UrlInfo) values.get(url);
+        return (UrlInfo) values.get(url.substring(0, url.length() - 1));
     }
 
     @Override
