@@ -72,12 +72,12 @@ public class UrlServiceImpl implements UrlService {
         ValueOperations<String, Object> values = redisTemplate.opsForValue();
         if (url.charAt(url.length() - 1) != '*') {
             UrlInfo urlInfo = (UrlInfo) values.get(url);
-            long visitCount = urlInfo.getVisitCount() + 1;
             UrlInfo saveUrlInfo = UrlInfo.builder()
                     .fakeUrl(urlInfo.getFakeUrl())
                     .realUrl(urlInfo.getRealUrl())
-                    .visitCount(visitCount)
+                    .visitCount(urlInfo.getVisitCount())
                     .build();
+            saveUrlInfo.updateVisitCount();
             values.set(String.valueOf(saveUrlInfo.getFakeUrl()), saveUrlInfo, Duration.ofDays(1));
             return (UrlInfo) values.get(url);
         }
