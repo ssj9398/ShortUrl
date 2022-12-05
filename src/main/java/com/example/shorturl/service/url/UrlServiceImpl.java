@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class UrlServiceImpl implements UrlService{
+public class UrlServiceImpl implements UrlService {
 
     private final UrlRepository urlRepository;
 
@@ -47,31 +47,38 @@ public class UrlServiceImpl implements UrlService{
         return makeUrl.getFakeUrl();
     }
 
-    public UrlInfo saveUrlByMysql(UrlInfo urlInfo){
+    public UrlInfo saveUrlByMysql(UrlInfo urlInfo) {
         return urlRepository.save(urlInfo);
     }
 
-    public UrlInfo saveUrlByRedis(UrlInfo urlInfo){
+    public UrlInfo saveUrlByRedis(UrlInfo urlInfo) {
         ValueOperations<String, Object> values = redisTemplate.opsForValue();
-        values.set(String.valueOf(urlInfo.getFakeUrl()), urlInfo, Duration.ofDays(7));
+        values.set(String.valueOf(urlInfo.getFakeUrl()), urlInfo, Duration.ofDays(1));
         return (UrlInfo) values.get(urlInfo.getFakeUrl());
     }
 
     @Override
-    @Transactional
     public UrlInfo getUrlInfo(String url) {
-        if(url.charAt(url.length() - 1)!='*'){
+        if (url.charAt(url.length() - 1) != '*') {
             UrlInfo urlInfo = urlRepository.findByFakeUrl(url).get();
             urlInfo.updateVisitCount();
             return urlRepository.findByFakeUrl(url).get();
         }
-        return urlRepository.findByFakeUrl(url.substring(0, url.length()-1)).get();
+        return urlRepository.findByFakeUrl(url.substring(0, url.length() - 1)).get();
     }
 
     @Override
     public UrlInfo getUrlInfoByRedis(String url) {
         ValueOperations<String, Object> values = redisTemplate.opsForValue();
-        if(url.charAt(url.length() - 1)!='*'){
+        if (url.charAt(url.length() - 1) != '*') {
+            UrlInfo urlInfo = (UrlInfo) values.get(url);
+            long visitCount = urlInfo.getVisitCount() + 1;
+            UrlInfo saveUrlInfo = UrlInfo.builder()
+                    .fakeUrl(urlInfo.getFakeUrl())
+                    .realUrl(urlInfo.getRealUrl())
+                    .visitCount(visitCount)
+                    .build();
+            values.set(String.valueOf(saveUrlInfo.getFakeUrl()), saveUrlInfo, Duration.ofDays(1));
             return (UrlInfo) values.get(url);
         }
         return (UrlInfo) values.get(url.substring(0, url.length() - 1));
@@ -84,29 +91,29 @@ public class UrlServiceImpl implements UrlService{
                 .collect(Collectors.toList());
     }
 
-    public String makeFakeUrl(){
+    public String makeFakeUrl() {
         int leftLimit = 97;
         int rightLimit = 122;
         int targetStringLength = 10;
 
         Random random = new Random();
-        while (true){
+        while (true) {
             String randomString = random.ints(leftLimit, rightLimit + 1)
                     .limit(targetStringLength)
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                     .toString();
             Optional<UrlInfo> optUrlInfo = urlRepository.findByFakeUrl(randomString);
 
-            if(optUrlInfo.isEmpty()){
+            if (optUrlInfo.isEmpty()) {
                 return randomString;
             }
         }
     }
 
-    public String checkHttp(String url){
-        if(url.contains("http")==false){
-            return "http://"+url;
-        }else {
+    public String checkHttp(String url) {
+        if (url.contains("http") == false) {
+            return "http://" + url;
+        } else {
             return url;
         }
     }
@@ -116,7 +123,7 @@ public class UrlServiceImpl implements UrlService{
             URL url = new URL(checkHttp(realUrl));
             url.openConnection();
             return url.toString();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new ApiRequestException("유효하지 않은 주소 입니다.");
         }
     }
@@ -130,7 +137,7 @@ public class UrlServiceImpl implements UrlService{
     private void deleteUrlByMoreThanTwoDay() {
         List<UrlInfo> urlInfoList = urlRepository.findAll();
         urlInfoList.forEach((url -> {
-            if(compareDay(LocalDateTime.now(), url.getCreatedAt())>1){
+            if (compareDay(LocalDateTime.now(), url.getCreatedAt()) > 1) {
                 urlRepository.deleteById(url.getId());
             }
         }));
