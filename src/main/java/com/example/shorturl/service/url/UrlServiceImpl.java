@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -52,7 +53,7 @@ public class UrlServiceImpl implements UrlService{
 
     public UrlInfo saveUrlByRedis(UrlInfo urlInfo){
         ValueOperations<String, Object> values = redisTemplate.opsForValue();
-        values.set(String.valueOf(urlInfo.getFakeUrl()), urlInfo);
+        values.set(String.valueOf(urlInfo.getFakeUrl()), urlInfo, Duration.ofDays(7));
         return (UrlInfo) values.get(urlInfo.getFakeUrl());
     }
 
