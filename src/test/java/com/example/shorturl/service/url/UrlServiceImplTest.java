@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,5 +33,20 @@ class UrlServiceImplTest {
         assertThat(checkHttp).contains("http");
         assertThat(checkHttp2).contains("http");
         assertThat(checkHttp3).contains("http");
+    }
+
+    @Test
+    @DisplayName("주소 유효성 검사")
+    void compareDay(){
+        //given
+        LocalDateTime nowTime = LocalDateTime.now();
+        LocalDateTime oneDaysAgo = LocalDateTime.now().minusDays(1);
+
+        //when
+        int compareDay = urlService.compareDay(nowTime, oneDaysAgo);
+
+        //then
+        assertThat(compareDay).isGreaterThan(0);
+
     }
 }
