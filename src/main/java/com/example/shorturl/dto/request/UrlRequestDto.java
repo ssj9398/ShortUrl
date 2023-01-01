@@ -1,11 +1,14 @@
 package com.example.shorturl.dto.request;
 
 import com.example.shorturl.domain.UrlInfo;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class UrlRequestDto {
 
     @Getter
+    @AllArgsConstructor
     public static class Create{
         private String url;
 
