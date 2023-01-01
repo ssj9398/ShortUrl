@@ -29,8 +29,9 @@ class UrlServiceTest {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Test
-    @DisplayName("mysql로 저장(빌드) 속도 테스트 1분13초")
+    @DisplayName("mysql로 저장(빌드) 속도 테스트 58초")
     void addUrlByMysql() throws InterruptedException {
+        long startTime = System.currentTimeMillis();
         int threadCount = 100000;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch latch = new CountDownLatch(threadCount);
@@ -46,11 +47,14 @@ class UrlServiceTest {
             });
         }
         latch.await();
+        long endTime = System.currentTimeMillis();
+        System.out.println("거린시간 = " + (endTime - startTime)/1000+"초");
     }
 
     @Test
-    @DisplayName("redis로 저장(빌드) 속도 테스트 40초")
+    @DisplayName("redis로 저장 속도 테스트 16초")
     void addUrlByRedis() throws InterruptedException {
+        long startTime = System.currentTimeMillis();
         int threadCount = 100000;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch latch = new CountDownLatch(threadCount);
@@ -66,5 +70,7 @@ class UrlServiceTest {
             });
         }
         latch.await();
+        long endTime = System.currentTimeMillis();
+        System.out.println("거린시간 = " + (endTime - startTime)/1000+"초");
     }
 }
