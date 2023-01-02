@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
+import java.net.URLConnection;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -122,7 +123,8 @@ public class UrlServiceImpl implements UrlService {
     public String checkValidUrl(String realUrl) {
         try {
             URL url = new URL(checkHttp(realUrl));
-            url.openConnection();
+            URLConnection urlConnection = url.openConnection();
+            urlConnection.connect();
             return url.toString();
         } catch (Exception e) {
             throw new ApiRequestException("유효하지 않은 주소 입니다.");

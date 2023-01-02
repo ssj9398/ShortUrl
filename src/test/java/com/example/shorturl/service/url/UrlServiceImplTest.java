@@ -1,5 +1,7 @@
 package com.example.shorturl.service.url;
 
+import com.example.shorturl.common.advice.exception.ApiRequestException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class UrlServiceImplTest {
@@ -48,5 +51,34 @@ class UrlServiceImplTest {
         //then
         assertThat(compareDay).isGreaterThan(0);
 
+    }
+
+    @Test
+    @DisplayName("유효한Url")
+    void checkValidUrl(){
+        //given
+        String realUrl = "https://naver.com";
+
+        //when
+        String validUrl = urlService.checkValidUrl(realUrl);
+
+        //then
+        assertThat(validUrl).isEqualTo(realUrl);
+    }
+
+    @Test
+    @DisplayName("유효하지않은Url")
+    void checkInValidUrl(){
+        //given
+        String realUrl = "h://n.c";
+
+        //when
+        ApiRequestException apiRequestException = Assertions.assertThrows(ApiRequestException.class, () -> {
+            urlService.checkValidUrl(realUrl);
+        });
+
+        //then
+        String message = apiRequestException.getMessage();
+        assertEquals("유효하지 않은 주소 입니다.", message);
     }
 }
