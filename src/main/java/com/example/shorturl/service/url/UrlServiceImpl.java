@@ -34,9 +34,9 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     @Transactional
-    public String addUrlByMysql(UrlRequestDto.Create create) {
+    public UrlResponseDto addUrlByMysql(UrlRequestDto.Create create) {
         String url = checkValidUrl(create.getUrl());
-        return saveUrlByMysql(create.toEntity(makeFakeUrl(), url)).getFakeUrl();
+        return new UrlResponseDto(saveUrlByMysql(create.toEntity(makeFakeUrl(), url)));
     }
 
     @Override

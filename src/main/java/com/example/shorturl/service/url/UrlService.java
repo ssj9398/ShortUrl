@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface UrlService {
-    String addUrlByMysql(UrlRequestDto.Create create) throws IOException;
+    UrlResponseDto addUrlByMysql(UrlRequestDto.Create create) throws IOException;
 
     UrlInfo getUrlInfo(String url);
 

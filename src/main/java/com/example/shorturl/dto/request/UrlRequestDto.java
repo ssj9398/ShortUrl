@@ -9,6 +9,7 @@ public class UrlRequestDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Create{
         private String url;
 

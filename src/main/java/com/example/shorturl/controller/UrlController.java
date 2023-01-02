@@ -1,5 +1,6 @@
 package com.example.shorturl.controller;
 
+import com.example.shorturl.common.advice.ResultInfo;
 import com.example.shorturl.common.advice.Success;
 import com.example.shorturl.domain.UrlInfo;
 import com.example.shorturl.dto.request.UrlRequestDto;
@@ -23,8 +24,8 @@ public class UrlController {
     private final UrlService urlService;
 
     @PostMapping("url")
-    public ResponseEntity<String> addUrl(@RequestBody UrlRequestDto.Create create) throws IOException {
-        return ResponseEntity.status(HttpStatus.CREATED).body("http://localhost:8081/url/"+urlService.addUrlByMysql(create));
+    public ResultInfo addUrl(@RequestBody UrlRequestDto.Create create) throws IOException {
+        return new ResultInfo(ResultInfo.Code.CREATE,"url등록 성공",urlService.addUrlByMysql(create));
     }
 
     @GetMapping("url")
