@@ -3,6 +3,7 @@ package com.example.shorturl.service.member;
 import com.example.shorturl.common.advice.exception.ApiRequestException;
 import com.example.shorturl.domain.Member;
 import com.example.shorturl.dto.request.MemberRequestDto;
+import com.example.shorturl.dto.response.MemberResponseDto;
 import com.example.shorturl.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +25,11 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     @Transactional
-    public Member addMember(MemberRequestDto.Create create) {
+    public MemberResponseDto addMember(MemberRequestDto.Create create) {
         Optional<Member> optMember = memberRepository.findByEmail(create.getEmail());
         if(optMember.isEmpty()){
             Member member = Member.createMember(create.getEmail(), passwordEncoder.encode(create.getPassword()));
-            return memberRepository.save(member);
+            return new MemberResponseDto(memberRepository.save(member));
         }else {
             throw  new ApiRequestException("이미 존재하는 회원입니다.");
         }

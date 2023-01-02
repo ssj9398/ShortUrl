@@ -17,7 +17,7 @@ public class ResultInfo {
     public enum Code {
         SUCCESS(200),
         FAIL(100),
-        CREATE(202);
+        CREATE(201);
 
         int value;
 
