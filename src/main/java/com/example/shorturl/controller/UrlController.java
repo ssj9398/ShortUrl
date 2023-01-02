@@ -34,12 +34,12 @@ public class UrlController {
     }
 
     @GetMapping("url/{url}")
-    public UrlResponseDto redirectUrl(HttpServletResponse response,
+    public ResultInfo redirectUrl(HttpServletResponse response,
                                       @PathVariable String url) throws IOException {
         if(url.charAt(url.length() - 1)!='*'){
             response.sendRedirect(urlService.getUrlInfo(url).getRealUrl());
         }else {
-            return new UrlResponseDto(urlService.getUrlInfo(url));
+            return new ResultInfo(ResultInfo.Code.SUCCESS, "주소 조회 성공!", urlService.getUrlInfo(url));
         }
         return null;
     }

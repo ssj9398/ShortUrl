@@ -1,5 +1,6 @@
 package com.example.shorturl.controller;
 
+import com.example.shorturl.domain.UrlInfo;
 import com.example.shorturl.dto.request.UrlRequestDto;
 import com.example.shorturl.dto.response.UrlResponseDto;
 import com.example.shorturl.repository.UrlRepository;
@@ -93,5 +94,38 @@ class UrlControllerTest {
         assertThat(urlResponseDto.size()).isEqualTo(10);
         assertThat((lastTime)).isAfter(firstTime);
         assertThat(statusCode).isEqualTo(200);
+    }
+
+    @Test
+    @DisplayName("가짜주소로 주소 상세조회")
+    void 가짜주소로_주소_상세조회() throws JsonProcessingException {
+        //given
+        UrlRequestDto.Create create = new UrlRequestDto.Create("https://www.naver.com",true);
+        UrlInfo urlInfo = urlRepository.save(create.toEntity("fakeUrl", create.getUrl()));
+
+        String url = urlInfo.getFakeUrl();
+        String body = objectMapper.writeValueAsString(create);
+        System.out.println("url = " + url);
+
+        //when
+        HttpEntity<String> request = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = restTemplate.exchange("/url/"+url+"*", HttpMethod.GET, request, String.class);
+
+        System.out.println("response = " + response);
+
+        //then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+
+        Integer statusCode = dc.read("$.code");
+        String realUrl = dc.read("$.data.realUrl");
+        String fakeUrl = dc.read("$.data.fakeUrl");
+        Boolean openStatus = dc.read("$.data.openStatus");
+        String message = dc.read("$.message");
+
+        assertThat(statusCode).isEqualTo(200);
+        assertThat(realUrl).isEqualTo(create.getUrl());
+        assertThat(fakeUrl).isEqualTo("fakeUrl");
+        assertThat(openStatus).isEqualTo(create.isOpenStatus());
+        assertThat(message).isEqualTo("주소 조회 성공!");
     }
 }
