@@ -29,8 +29,8 @@ public class UrlController {
     }
 
     @GetMapping("url")
-    public ResponseEntity<Success> getTopTenUrlList(){
-        return new ResponseEntity<>(new Success("최근 등록 된 주소 10개 조회 성공!",urlService.getTopTenUrlList()),HttpStatus.OK);
+    public ResultInfo getTopTenUrlList(){
+        return new ResultInfo(ResultInfo.Code.SUCCESS,"최근 등록 된 주소 10개 조회 성공!",urlService.getTopTenUrlList());
     }
 
     @GetMapping("url/{url}")

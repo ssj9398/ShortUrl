@@ -1,9 +1,13 @@
 package com.example.shorturl.dto.response;
 
 import com.example.shorturl.domain.UrlInfo;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class UrlResponseDto {
@@ -20,5 +24,14 @@ public class UrlResponseDto {
         this.fakeUrl = "http://localhost:8081/url/"+urlInfo.getFakeUrl();
         this.visitCount = urlInfo.getVisitCount();
         this.createTime = urlInfo.getCreatedAt();
+    }
+
+    @Getter
+    public static class TopTenUrl{
+        List<UrlResponseDto> TopTenUrl;
+
+        public TopTenUrl(List<UrlResponseDto> topTenUrlList) {
+            this.TopTenUrl = topTenUrlList;
+        }
     }
 }

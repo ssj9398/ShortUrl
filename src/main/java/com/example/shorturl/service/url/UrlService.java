@@ -12,7 +12,7 @@ public interface UrlService {
 
     UrlInfo getUrlInfo(String url);
 
-    List<UrlResponseDto> getTopTenUrlList();
+    UrlResponseDto.TopTenUrl getTopTenUrlList();
 
     String addUrlByRedis(UrlRequestDto.Create create);
 

@@ -1,6 +1,7 @@
 package com.example.shorturl.controller;
 
 import com.example.shorturl.dto.request.UrlRequestDto;
+import com.example.shorturl.dto.response.UrlResponseDto;
 import com.example.shorturl.repository.UrlRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,7 +53,6 @@ class UrlControllerTest {
         ResponseEntity<String> response = restTemplate.exchange("/url", HttpMethod.POST, request, String.class);
 
         //then
-        System.out.println("rr = " + response);
         DocumentContext dc = JsonPath.parse(response.getBody());
 
         Integer statusCode = dc.read("$.code");
@@ -58,5 +62,36 @@ class UrlControllerTest {
         assertThat(message).isEqualTo("url등록 성공");
         assertThat(realUrl).isEqualTo(create.getUrl());
         assertThat(statusCode).isEqualTo(202);
+    }
+
+    @Test
+    @DisplayName("최근 등록된 주소 10건 조회")
+    void 최근_등록된_주소_10건_조회(){
+        //given
+        for(int i =0; i<10; i++){
+            UrlRequestDto.Create create = new UrlRequestDto.Create("https://www.naver.com",true);
+            urlRepository.save(create.toEntity("fakeUrl",create.getUrl()));
+        }
+
+        //when
+        HttpEntity<String> request = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange("/url", HttpMethod.GET, request, String.class);
+
+        //then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+
+        Integer statusCode = dc.read("$.code");
+        List<UrlResponseDto> urlResponseDto = dc.read("data.topTenUrl");
+        String last = dc.read("$.data.topTenUrl[0].createTime");
+        String first = dc.read("$.data.topTenUrl[9].createTime");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+
+        LocalDateTime lastTime = LocalDateTime.parse(last, formatter);
+        LocalDateTime firstTime = LocalDateTime.parse(first, formatter);
+
+        assertThat(urlResponseDto.size()).isEqualTo(10);
+        assertThat((lastTime)).isAfter(firstTime);
+        assertThat(statusCode).isEqualTo(200);
     }
 }

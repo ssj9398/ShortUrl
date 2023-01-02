@@ -85,10 +85,11 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
-    public List<UrlResponseDto> getTopTenUrlList() {
-        return urlRepository.findTop10ByOpenStatusOrderByCreatedAtDesc(true).stream()
+    public UrlResponseDto.TopTenUrl getTopTenUrlList() {
+        List<UrlResponseDto> topTenUrlList = urlRepository.findTop10ByOpenStatusOrderByCreatedAtDesc(true).stream()
                 .map(UrlResponseDto::new)
                 .collect(Collectors.toList());
+        return new UrlResponseDto.TopTenUrl(topTenUrlList);
     }
 
     public String makeFakeUrl() {
