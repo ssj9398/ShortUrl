@@ -38,10 +38,10 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public MemberResponseDto loginMember(MemberRequestDto.Login login) {
-        Optional<Member> optMember = memberRepository.findByEmail(login.getEmail());
-        if(optMember.isEmpty()){
+        Optional<Member> optMember = Optional.ofNullable(memberRepository.findByEmail(login.getEmail()).orElseThrow(() -> {
             throw new ApiRequestException("존재하지 않는 회원입니다.");
-        } else if (!passwordEncoder.matches(login.getPassword(), optMember.get().getPassword())) {
+        }));
+        if (!passwordEncoder.matches(login.getPassword(), optMember.get().getPassword())) {
             throw new ApiRequestException("비밀번호 틀림");
         }
         return new MemberResponseDto(optMember.get());
