@@ -27,8 +27,7 @@ public class MemberController {
     }
 
     @PostMapping("member/login")
-    public ResponseEntity<Success> loginMember(@RequestBody MemberRequestDto.Login login){
-        memberService.loginMember(login);
-        return new ResponseEntity<>(new Success("로그인 성공",""),HttpStatus.OK);
+    public ResultInfo loginMember(@RequestBody MemberRequestDto.Login login){
+        return new ResultInfo(ResultInfo.Code.SUCCESS,"로그인 성공",memberService.loginMember(login));
     }
 }

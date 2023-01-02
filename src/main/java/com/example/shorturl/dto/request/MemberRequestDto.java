@@ -17,6 +17,8 @@ public class MemberRequestDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Login{
         private String email;
 

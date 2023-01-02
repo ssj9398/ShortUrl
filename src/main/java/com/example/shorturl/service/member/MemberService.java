@@ -7,5 +7,5 @@ import com.example.shorturl.dto.response.MemberResponseDto;
 public interface MemberService {
     MemberResponseDto addMember(MemberRequestDto.Create create);
 
-    void loginMember(MemberRequestDto.Login login);
+    MemberResponseDto loginMember(MemberRequestDto.Login login);
 }
