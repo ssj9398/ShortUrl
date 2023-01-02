@@ -1,23 +1,35 @@
 package com.example.shorturl.service.url;
 
 import com.example.shorturl.common.advice.exception.ApiRequestException;
+import com.example.shorturl.domain.UrlInfo;
+import com.example.shorturl.repository.UrlRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UrlServiceImplTest {
 
     @InjectMocks
     private UrlServiceImpl urlService;
+
+    @Mock
+    private UrlRepository urlRepository;
 
     @Test
     @DisplayName("http확인후 없을 시 붙여주기")
@@ -80,5 +92,25 @@ class UrlServiceImplTest {
         //then
         String message = apiRequestException.getMessage();
         assertEquals("유효하지 않은 주소 입니다.", message);
+    }
+
+    @Test
+    @DisplayName("가짜주소 생성테스트")
+    void makeFakeUrl() {
+        //given
+
+        //when
+        List<String> fakeUrlList = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            String fakeUrl = urlService.makeFakeUrl();
+            fakeUrlList.add(fakeUrl);
+        }
+        int listSize = fakeUrlList.size();
+
+        //set으로 중복제거
+        List<String> setList = fakeUrlList.stream().distinct().collect(Collectors.toList());
+
+        //then
+        assertEquals(listSize, setList.size());
     }
 }
