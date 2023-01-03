@@ -2,6 +2,8 @@ package com.example.shorturl.service.url;
 
 import com.example.shorturl.common.advice.exception.ApiRequestException;
 import com.example.shorturl.domain.UrlInfo;
+import com.example.shorturl.dto.request.UrlRequestDto;
+import com.example.shorturl.dto.response.UrlResponseDto;
 import com.example.shorturl.repository.UrlRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +22,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -95,7 +98,7 @@ class UrlServiceImplTest {
     }
 
     @Test
-    @DisplayName("가짜주소 생성테스트")
+    @DisplayName("중복되지않는 가짜주소 생성테스트")
     void makeFakeUrl() {
         //given
 
@@ -112,5 +115,25 @@ class UrlServiceImplTest {
 
         //then
         assertEquals(listSize, setList.size());
+    }
+
+    @Test
+    @DisplayName("mysql에 주소저장")
+    void addUrlByMysql(){
+        //given
+        String realUrl = "https://naver.com";
+        Boolean openStatus = true;
+        String fakeUrl = "fakeUrl";
+        UrlRequestDto.Create create = new UrlRequestDto.Create(realUrl, openStatus);
+
+        //stub
+        when(urlRepository.save(any())).thenReturn(create.toEntity(fakeUrl,create.getUrl()));
+
+        //when
+        UrlResponseDto urlResponseDto = urlService.addUrlByMysql(create);
+
+        //then
+        assertThat(urlResponseDto.getRealUrl()).isEqualTo(realUrl);
+        assertThat(urlResponseDto.getFakeUrl()).isEqualTo("http://localhost:8081/url/"+fakeUrl);
     }
 }
