@@ -70,11 +70,11 @@ class MemberControllerTest {
     void 로그인() throws JsonProcessingException {
         //given
         //회원가입
-        MemberRequestDto.Create create = new MemberRequestDto.Create("test@google.com", "123456");
+        MemberRequestDto.Create create = new MemberRequestDto.Create("test2@google.com", "123456");
         Member member = Member.createMember(create.getEmail(), passwordEncoder.encode(create.getPassword()));
         memberRepository.save(member);
 
-        MemberRequestDto.Login login = new MemberRequestDto.Login("test@google.com", "123456");
+        MemberRequestDto.Login login = new MemberRequestDto.Login("test2@google.com", "123456");
         String body = objectMapper.writeValueAsString(login);
 
         //when

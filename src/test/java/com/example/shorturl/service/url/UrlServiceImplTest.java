@@ -132,7 +132,7 @@ class UrlServiceImplTest {
         UrlRequestDto.Create create = new UrlRequestDto.Create(realUrl, openStatus);
 
         //stub
-        when(urlRepository.save(any())).thenReturn(create.toEntity(fakeUrl,create.getUrl()));
+        when(urlRepository.save(any())).thenReturn(create.toEntity(fakeUrl));
 
         //when
         UrlResponseDto urlResponseDto = urlService.addUrlByMysql(create);
@@ -152,13 +152,36 @@ class UrlServiceImplTest {
         UrlRequestDto.Create create = new UrlRequestDto.Create(realUrl, openStatus);
 
         //stub
-        when(urlRepository.save(any())).thenReturn(create.toEntity(fakeUrl,create.getUrl()));
+        when(urlRepository.save(any())).thenReturn(create.toEntity(fakeUrl));
 
         //when
-        UrlInfo urlInfo = urlService.saveUrlByMysql(create.toEntity(fakeUrl, realUrl));
+        UrlInfo urlInfo = urlService.saveUrlByMysql(create.toEntity(fakeUrl));
 
         //then
         assertThat(urlInfo.getRealUrl()).isEqualTo(realUrl);
         assertThat(urlInfo.getFakeUrl()).isEqualTo(fakeUrl);
+    }
+
+    @Test
+    @DisplayName("주소 접속 시 조회수 테스트")
+    void getUrlInfo(){
+        //given
+        String realUrl = "https://naver.com";
+        Boolean openStatus = true;
+        String fakeUrl = "fakeUrl";
+
+        UrlRequestDto.Create create = new UrlRequestDto.Create(realUrl, openStatus);
+
+        //stub
+        when(urlRepository.findByFakeUrl(fakeUrl)).thenReturn(Optional.ofNullable(create.toEntity(fakeUrl)));
+
+        //when
+        UrlInfo urlInfo = urlService.getUrlInfo(fakeUrl);
+
+        //then
+        assertEquals(urlInfo.getFakeUrl(), fakeUrl);
+        assertEquals(urlInfo.getRealUrl(), realUrl);
+        assertEquals(urlInfo.isOpenStatus(), openStatus);
+        assertEquals(urlInfo.getVisitCount(), 1);
     }
 }

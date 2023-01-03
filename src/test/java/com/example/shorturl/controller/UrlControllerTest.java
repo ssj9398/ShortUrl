@@ -71,7 +71,7 @@ class UrlControllerTest {
         //given
         for(int i =0; i<10; i++){
             UrlRequestDto.Create create = new UrlRequestDto.Create("https://www.naver.com",true);
-            urlRepository.save(create.toEntity("fakeUrl",create.getUrl()));
+            urlRepository.save(create.toEntity("fakeUrl"));
         }
 
         //when
@@ -101,7 +101,7 @@ class UrlControllerTest {
     void 가짜주소로_주소_상세조회() throws JsonProcessingException {
         //given
         UrlRequestDto.Create create = new UrlRequestDto.Create("https://www.naver.com",true);
-        UrlInfo urlInfo = urlRepository.save(create.toEntity("fakeUrl", create.getUrl()));
+        UrlInfo urlInfo = urlRepository.save(create.toEntity("fakeUrl"));
 
         String url = urlInfo.getFakeUrl();
         String body = objectMapper.writeValueAsString(create);

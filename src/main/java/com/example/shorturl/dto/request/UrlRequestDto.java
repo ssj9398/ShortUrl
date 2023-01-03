@@ -15,7 +15,7 @@ public class UrlRequestDto {
 
         private boolean openStatus;
 
-        public UrlInfo toEntity(String fakeUrl, String url){
+        public UrlInfo toEntity(String fakeUrl){
             return UrlInfo.builder()
                     .realUrl(url)
                     .fakeUrl(fakeUrl)
