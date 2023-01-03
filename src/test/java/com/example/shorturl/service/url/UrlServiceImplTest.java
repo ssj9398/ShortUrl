@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,6 +35,9 @@ class UrlServiceImplTest {
 
     @Mock
     private UrlRepository urlRepository;
+
+    @Mock
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Test
     @DisplayName("http확인후 없을 시 붙여주기")
@@ -135,5 +140,25 @@ class UrlServiceImplTest {
         //then
         assertThat(urlResponseDto.getRealUrl()).isEqualTo(realUrl);
         assertThat(urlResponseDto.getFakeUrl()).isEqualTo("http://localhost:8081/url/"+fakeUrl);
+    }
+
+    @Test
+    @DisplayName("saveUrlByMysql")
+    void saveUrlByMysql(){
+        //given
+        String realUrl = "https://naver.com";
+        Boolean openStatus = true;
+        String fakeUrl = "fakeUrl";
+        UrlRequestDto.Create create = new UrlRequestDto.Create(realUrl, openStatus);
+
+        //stub
+        when(urlRepository.save(any())).thenReturn(create.toEntity(fakeUrl,create.getUrl()));
+
+        //when
+        UrlInfo urlInfo = urlService.saveUrlByMysql(create.toEntity(fakeUrl, realUrl));
+
+        //then
+        assertThat(urlInfo.getRealUrl()).isEqualTo(realUrl);
+        assertThat(urlInfo.getFakeUrl()).isEqualTo(fakeUrl);
     }
 }
