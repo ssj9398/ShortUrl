@@ -65,7 +65,7 @@ public class UrlServiceImpl implements UrlService {
             urlInfo.updateVisitCount();
             return urlRepository.findByFakeUrl(url).get();
         }
-        return urlRepository.findByFakeUrl(url.substring(0, url.length() - 1)).get();
+        return urlRepository.findByFakeUrl(subStringUrl(url)).get();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class UrlServiceImpl implements UrlService {
             values.set(String.valueOf(saveUrlInfo.getFakeUrl()), saveUrlInfo, Duration.ofDays(1));
             return (UrlInfo) values.get(url);
         }
-        return (UrlInfo) values.get(url.substring(0, url.length() - 1));
+        return (UrlInfo) values.get(subStringUrl(url));
     }
 
     @Override
@@ -129,6 +129,10 @@ public class UrlServiceImpl implements UrlService {
         } catch (Exception e) {
             throw new ApiRequestException("유효하지 않은 주소 입니다.");
         }
+    }
+
+    public String subStringUrl(String url){
+        return url.substring(0, url.length() - 1);
     }
 
     @Scheduled(cron = "0 0 0 * * *") //정시마다
