@@ -25,6 +25,7 @@ import java.util.Random;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -207,5 +208,31 @@ class UrlServiceImplTest {
         assertEquals(urlInfo.getRealUrl(), urlInfoEntity.getRealUrl());
         assertEquals(urlInfo.getVisitCount(), urlInfoEntity.getVisitCount());
 
+    }
+
+    @Test
+    @DisplayName("getTopTenUrlList")
+    void getTopTenUrlList(){
+        //given
+        List<UrlInfo> urlList = new ArrayList<>();
+        for(int i=0; i<10; i++){
+            UrlInfo urlInfo = UrlInfo.builder()
+                    .realUrl("google.com"+i)
+                    .fakeUrl("abcdef"+i)
+                    .openStatus(true)
+                    .build();
+            urlList.add(urlInfo);
+        }
+
+        //stub
+        when(urlRepository.findTop10ByOpenStatusOrderByCreatedAtDesc(true)).thenReturn(urlList);
+
+        //when
+        UrlResponseDto.TopTenUrl topTenUrlList = urlService.getTopTenUrlList();
+
+        //then
+        assertEquals(topTenUrlList.getTopTenUrl().size(), 10);
+        assertEquals(topTenUrlList.getTopTenUrl().get(0).getRealUrl(), "google.com0");
+        assertEquals(topTenUrlList.getTopTenUrl().get(1).getFakeUrl(), "http://localhost:8081/url/abcdef1");
     }
 }
