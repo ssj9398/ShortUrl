@@ -164,7 +164,7 @@ class UrlServiceImplTest {
 
     @Test
     @DisplayName("주소 접속 시 조회수 테스트")
-    void getUrlInfo(){
+    void getUrlVisitCount(){
         //given
         String realUrl = "https://naver.com";
         Boolean openStatus = true;
@@ -183,5 +183,29 @@ class UrlServiceImplTest {
         assertEquals(urlInfo.getRealUrl(), realUrl);
         assertEquals(urlInfo.isOpenStatus(), openStatus);
         assertEquals(urlInfo.getVisitCount(), 1);
+    }
+
+    @Test
+    @DisplayName("주소 접속 시 상세정보 조회 테스트")
+    void getUrlInfo(){
+        //given
+        //테스트 데이터
+        UrlRequestDto.Create create = new UrlRequestDto.Create("https://naver.com", true);
+
+        UrlInfo urlInfoEntity = create.toEntity(urlService.makeFakeUrl());
+
+        String fakeUrl = urlInfoEntity.getFakeUrl()+"*";
+
+        //stub
+        when(urlRepository.findByFakeUrl(urlInfoEntity.getFakeUrl())).thenReturn(Optional.ofNullable(urlInfoEntity));
+
+        //when
+        UrlInfo urlInfo = urlService.getUrlInfo(fakeUrl);
+
+        //then
+        assertEquals(urlInfo.getFakeUrl(), urlInfoEntity.getFakeUrl());
+        assertEquals(urlInfo.getRealUrl(), urlInfoEntity.getRealUrl());
+        assertEquals(urlInfo.getVisitCount(), urlInfoEntity.getVisitCount());
+
     }
 }
