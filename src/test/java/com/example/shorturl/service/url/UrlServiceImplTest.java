@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.platform.commons.util.StringUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -234,5 +235,19 @@ class UrlServiceImplTest {
         assertEquals(topTenUrlList.getTopTenUrl().size(), 10);
         assertEquals(topTenUrlList.getTopTenUrl().get(0).getRealUrl(), "google.com0");
         assertEquals(topTenUrlList.getTopTenUrl().get(1).getFakeUrl(), "http://localhost:8081/url/abcdef1");
+    }
+
+    @Test
+    @DisplayName("substringUrl")
+    void substringUrl(){
+        //given
+        String testString = "testUrl*";
+
+        //when
+        String subStringUrl = urlService.subStringUrl(testString);
+
+        //then
+        assertEquals(subStringUrl, testString.substring(0, testString.length() - 1));
+        assertEquals(testString.length() -1, subStringUrl.length());
     }
 }
