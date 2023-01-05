@@ -1,5 +1,6 @@
 package com.example.shorturl.dto.request;
 
+import com.example.shorturl.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,12 @@ public class MemberRequestDto {
         private String email;
 
         private String password;
+
+        public Member toEntity(){
+            return Member.builder()
+                    .email(email)
+                    .password(password)
+                    .build();
+        }
     }
 }

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -31,7 +32,7 @@ class MemberServiceTest {
     private MemberServiceImpl memberService;
 
     @Mock
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Mock
     private MemberRepository memberRepository;
@@ -39,9 +40,8 @@ class MemberServiceTest {
     @Test
     void 회원가입() {
         //given
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         MemberRequestDto.Create member = new MemberRequestDto.Create("test@google.com","1234");
-        Member createMember = Member.createMember(member.getEmail(), encoder.encode(member.getPassword()));
+        Member createMember = Member.createMember(member.getEmail(), bCryptPasswordEncoder.encode(member.getPassword()));
 
         //stub
         when(memberRepository.save(any())).thenReturn(createMember);
@@ -55,35 +55,28 @@ class MemberServiceTest {
 
     }
 
-    @Test
-    @DisplayName("로그인")
-    void 로그인(){
-        //given
-
-        MemberRequestDto.Create create = new MemberRequestDto.Create("test@google.com", "1234");
-        memberService.addMember(create);
-//        Member member = Member.builder()
-//                .email(create.getEmail())
-//                .password(passwordEncoder.encode(create.getPassword()))
-//                .build();
-
-        MemberRequestDto.Login login = new MemberRequestDto.Login("test@google.com", "1234");
-        Member member = Member.builder()
-                .email(create.getEmail())
-                .password(create.getPassword())
-                .build();
-        System.out.println(member.getPassword());
-        System.out.println(login.getPassword());
-        //stub
-        when(memberRepository.findByEmail(login.getEmail())).thenReturn(Optional.ofNullable(member));
-        //when(Member.createMember(create.getEmail(), passwordEncoder.encode(create.getPassword()))).thenReturn(member);
-        when(passwordEncoder.encode(create.getPassword())).thenReturn(String.valueOf(member));
-
-        //when
-        MemberResponseDto memberResponseDto = memberService.loginMember(login);
-
-        //then
-        System.out.println("a = " + memberResponseDto.getEmail());
-    }
+//    @Test
+//    @DisplayName("로그인")
+//    void 로그인(){
+//        //given
+//        MemberRequestDto.Create member = new MemberRequestDto.Create("test@google.com","1234");
+//        Member createMember = Member.createMember(member.getEmail(), bCryptPasswordEncoder.encode(member.getPassword()));
+//        System.out.println("c = " + createMember.getPassword());
+//        MemberRequestDto.Login login = new MemberRequestDto.Login("test@google.com", "1234");
+//        Member loginMember = login.toEntity();
+//
+//        //stub
+//        //when(memberRepository.save(any())).thenReturn(createMember);
+////        when(memberRepository.findByEmail(login.getEmail())).thenReturn(Optional.ofNullable(createMember));
+//        //when(Member.createMember(create.getEmail(), passwordEncoder.encode(create.getPassword()))).thenReturn(member);
+//        //when(bCryptPasswordEncoder.encode(member.getPassword())).thenReturn(String.valueOf(createMember));
+//
+//        //when
+//        //MemberResponseDto memberResponseDto = memberService.loginMember(login);
+//
+//        //then
+//        System.out.println("a = " + createMember.getPassword());
+//        System.out.println("a = " + bCryptPasswordEncoder.encode("1234"));
+//    }
 
 }

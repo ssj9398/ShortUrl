@@ -1,6 +1,7 @@
 package com.example.shorturl.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ public class Member {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Builder
     private Member(String email, String password){
         this.email = email;
         this.password = password;
