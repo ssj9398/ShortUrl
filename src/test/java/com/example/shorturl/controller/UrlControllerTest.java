@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -62,10 +63,11 @@ class UrlControllerTest {
 
         assertThat(message).isEqualTo("url등록 성공");
         assertThat(realUrl).isEqualTo(create.getUrl());
-        assertThat(statusCode).isEqualTo(202);
+        assertThat(statusCode).isEqualTo(201);
     }
 
     @Test
+    @Sql("classpath:db/tableinit.sql")
     @DisplayName("최근 등록된 주소 10건 조회")
     void 최근_등록된_주소_10건_조회(){
         //given
@@ -97,6 +99,7 @@ class UrlControllerTest {
     }
 
     @Test
+    @Sql("classpath:db/tableinit.sql")
     @DisplayName("가짜주소로 주소 상세조회")
     void 가짜주소로_주소_상세조회() throws JsonProcessingException {
         //given
